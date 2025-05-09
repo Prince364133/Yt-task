@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YouTube Productivity Tracker</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a1a, #2e2e2e);
+      color: white;
+      overflow-x: hidden;
+    }
+    .glass-box {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 20px;
+      margin: 20px;
+      transition: all 0.5s ease;
+      animation: fadeIn 1s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .btn {
+      padding: 10px 20px;
+      background-color: #00ff99;
+      color: black;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .btn:hover { background-color: #00cc7a; }
+    .hidden { display: none; }
+    .timer { color: #ffcc00; font-weight: bold; }
+    .warning {
+      background-color: #ff0044;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      animation: shake 0.4s infinite alternate;
+    }
+    @keyframes shake {
+      0% { transform: translateX(-2px); }
+      100% { transform: translateX(2px); }
+    }
+    @media (max-width: 768px) {
+      .glass-box { padding: 15px; margin: 15px; }
+      .btn { padding: 8px 16px; font-size: 14px; }
+      .timer { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glass-box">
+    <div id="warningArea" class="warning hidden"></div>
+    <h2>Weekly YouTube Progress</h2>
+    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+      <div>Points: <span id="points">0</span></div>
+      <div>Success Rate: <span id="success">100%</span></div>
+      <div><button class="btn" onclick="showData()">Data</button></div>
+      <div><button class="btn" onclick="resetAll()">Reset</button></div>
+    </div>
+  </div>
+
+  <div class="glass-box" id="shortsBlock">
+    <h3>Shorts Upload</h3>
+    <input type="checkbox" id="shortCheck"> Uploaded Shorts (10 pts)<br>
+    <button class="btn" onclick="submitShorts()">Submit</button>
+    <div id="shortTimer" class="hidden timer"></div>
+  </div>
+
+  <div class="glass-box" id="checklistBlock">
+    <h3>Weekly Checklist</h3>
+    <div id="dayList"></div>
+  </div>
+
+  <script>
+    const checklist = [
+      { day: 'Day 1', task: 'Search Topic', points: 10 },
+      { day: 'Day 2', task: 'Script Writing', points: 12 },
+      { day: 'Day 3', task: 'Shooting Video', points: 15 },
+      { day: 'Day 4', task: 'Editing', points: 18 },
+      { day: 'Day 5', task: 'Thumbnail/Title/Description', points: 20 },
+      { day: 'Day 6', task: 'Upload & Optimize', points: 8 }
+    ];
+
+    let totalPoints = Number(localStorage.getItem('points')) || 0;
+    let successRate = Number(localStorage.getItem('successRate')) || 100;
+    let warningShown = localStorage.getItem('warning') === 'true';
+    let shortsCooldown = Number(localStorage.getItem('shortsCooldown')) || 0;
+    let lastReset = Number(localStorage.getItem('lastReset')) || Date.now();
+
+    function resetCycleIfNeeded() {
+      const now = Date.now();
+      if (now - lastReset >= 8 * 24 * 60 * 60 * 1000) {
+        for (let i = 0; i < checklist.length; i++) localStorage.removeItem(`check_${i}`);
+        localStorage.setItem('lastReset', now);
+        location.reload();
+      }
+    }
+
+    function resetAll() {
+      const password = prompt("Enter password to reset data:");
+      if (password === "364133") {
+        localStorage.clear();
+        location.reload();
+      } else {
+        alert("Incorrect password.");
+      }
+    }
+
+    function renderChecklist() {
+      resetCycleIfNeeded();
+      const dayList = document.getElementById('dayList');
+      dayList.innerHTML = '';
+      let allDone = true;
+      let uncompletedTasks = 0;
+
+      for (let i = 0; i < checklist.length; i++) {
+        if (localStorage.getItem(`check_${i}`) !== 'done') {
+          allDone = false;
+          uncompletedTasks++;
+        }
+      }
+
+      if (allDone) {
+        document.getElementById('checklistBlock').innerHTML = '<h3 style="color:#00ff99;text-align:center;">Enjoy the Day</h3>';
+        let longVideoUploaded = localStorage.getItem('longUploaded') === 'true';
+        if (!longVideoUploaded) {
+          totalPoints += 63;
+          localStorage.setItem('points', totalPoints);
+          localStorage.setItem('longUploaded', 'true');
+        }
+        document.getElementById('points').innerText = totalPoints;
+        return;
+      }
+
+      let unlockedDay = -1;
+      for (let i = 0; i < checklist.length; i++) {
+        if (localStorage.getItem(`check_${i}`)) unlockedDay = i;
+        else break;
+      }
+      const currentDay = unlockedDay + 1;
+      const now = Date.now();
+
+      checklist.forEach((item, index) => {
+        const key = `check_${index}`;
+        const done = localStorage.getItem(key) === 'done';
+        let block = `<div class="glass-box" id="block_${index}">
+          <h4>${item.day} - ${item.task}</h4>`;
+
+        if (index === currentDay && now - lastReset < 6 * 24 * 60 * 60 * 1000) {
+          block += `
+            <label><input type="checkbox" id="cb_${index}_done"> Done</label>
+            <label><input type="checkbox" id="cb_${index}_fail"> Not Done</label><br>
+            <button class="btn" onclick="submitCheck(${index}, ${item.points})">Submit</button>
+          `;
+        } else if (index <= unlockedDay) {
+          block += `<div class="timer">Completed ✅ - Wait 6 days to resubmit</div>`;
+        } else {
+          block += `<div class="timer">Locked - Complete previous days</div>`;
+        }
+
+        block += `<button class="btn" onclick="alert('Read more page will be added here.')">Read More</button></div>`;
+        dayList.innerHTML += block;
+      });
+
+      document.getElementById('warningArea').innerHTML = `Uncompleted Tasks: ${uncompletedTasks}`;
+      document.getElementById('warningArea').classList.remove('hidden');
+    }
+
+    function submitCheck(index, points) {
+      const done = document.getElementById(`cb_${index}_done`).checked;
+      const fail = document.getElementById(`cb_${index}_fail`).checked;
+      if (!done && !fail) return alert('Please select an option.');
+      if (done) {
+        localStorage.setItem(`check_${index}`, 'done');
+        totalPoints += points;
+        localStorage.setItem('points', totalPoints);
+        document.getElementById('points').innerText = totalPoints;
+      } else {
+        warningShown = true;
+        localStorage.setItem('warning', 'true');
+        showWarning();
+      }
+      location.reload();
+    }
+
+    function submitShorts() {
+      if (shortsCooldown && Date.now() < shortsCooldown) return alert('Please wait 24 hours to upload next short.');
+      if (!document.getElementById('shortCheck').checked) return alert('Check the box to upload.');
+      totalPoints += 10;
+      localStorage.setItem('points', totalPoints);
+      document.getElementById('points').innerText = totalPoints;
+      shortsCooldown = Date.now() + 24 * 60 * 60 * 1000;
+      localStorage.setItem('shortsCooldown', shortsCooldown);
+      document.getElementById('shortTimer').classList.remove('hidden');
+      countdownTo(shortsCooldown, 'shortTimer');
+    }
+
+    function countdownTo(time, elementId) {
+      const timerEl = document.getElementById(elementId);
+      const interval = setInterval(() => {
+        const left = time - Date.now();
+        if (left <= 0) {
+          clearInterval(interval);
+          timerEl.classList.add('hidden');
+        } else {
+          const hrs = Math.floor(left / (1000 * 60 * 60));
+          const mins = Math.floor((left % (1000 * 60 * 60)) / (1000 * 60));
+          const secs = Math.floor((left % (1000 * 60)) / 1000);
+          timerEl.innerText = `Next available in ${hrs}h ${mins}m ${secs}s`;
+        }
+      }, 1000);
+    }
+
+    function showWarning() {
+      const warning = document.getElementById('warningArea');
+      warning.innerText = `⚠️ You missed a task. Earn 20 points or complete full checklist next week to remove warning.`;
+      warning.classList.remove('hidden');
+    }
+
+    function showData() {
+      alert(`Total Shorts Uploaded: ${Math.floor((totalPoints % 100) / 10)}\nLong Video Weeks Completed: ${Math.floor(totalPoints / 63)}`);
+    }
+
+    // Initial render
+    document.getElementById('points').innerText = totalPoints;
+    document.getElementById('success').innerText = successRate + '%';
+    if (warningShown) showWarning();
+    if (shortsCooldown && Date.now() < shortsCooldown) {
+      document.getElementById('shortTimer').classList.remove('hidden');
+      countdownTo(shortsCooldown, 'shortTimer');
+    }
+    renderChecklist();
+  </script>
+</body>
+</html>
