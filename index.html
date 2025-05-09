@@ -101,7 +101,7 @@
 
     function resetCycleIfNeeded() {
       const now = Date.now();
-      if (now - lastReset >= 8 * 24 * 60 * 60 * 1000) {
+      if (now - lastReset >=  24 * 60 * 60 * 1000) {
         for (let i = 0; i < checklist.length; i++) localStorage.removeItem(`check_${i}`);
         localStorage.setItem('lastReset', now);
         location.reload();
@@ -133,7 +133,7 @@
       }
 
       if (allDone) {
-        document.getElementById('checklistBlock').innerHTML = '<h3 style="color:#00ff99;text-align:center;">Enjoy the Day</h3>';
+        document.getElementById('checklistBlock').innerHTML = '<h3 style="color:#00ff99;text-align:center;">Enjoy the Day <p id="next-reset"></p></h3>';
         let longVideoUploaded = localStorage.getItem('longUploaded') === 'true';
         if (!longVideoUploaded) {
           totalPoints += 63;
@@ -242,6 +242,17 @@
       countdownTo(shortsCooldown, 'shortTimer');
     }
     renderChecklist();
+      function showNextResetTime() {
+  const lastReset = Number(localStorage.getItem('lastReset') || Date.now());
+  const nextReset = new Date(lastReset +  24 * 60 * 60 * 1000);
+
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', 
+                    hour: '2-digit', minute: '2-digit' };
+  document.getElementById('next-reset').textContent = 
+    "Next reset will happen on: " + nextReset.toLocaleString('en-IN', options);
+}
+
+showNextResetTime();
   </script>
 </body>
 </html>
