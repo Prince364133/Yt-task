@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YouTube Plan Hub</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .logo {
+      width: 100px;
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    .title {
+      font-size: 2.2rem;
+      text-align: center;
+      margin-top: 10px;
+      color: #ff0000;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .button-box {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px 40px;
+      width: 280px;
+      text-align: center;
+      transition: 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+    }
+
+    .button-box:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+    }
+
+    .button-box a {
+      text-decoration: none;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+      display: inline-block;
+      padding: 15px 20px;
+      background-color: #ff0000;
+      border-radius: 10px;
+      margin-top: 15px;
+      transition: background 0.3s ease;
+    }
+
+    .button-box a:hover {
+      background-color: #cc0000;
+    }
+  </style>
+</head>
+<body>
+
+  <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube Logo" class="logo">
+
+  <div class="title">YouTube Plan</div>
+
+  <div class="button-container">
+    <div class="button-box">
+      <h3>6-Day YouTube Plan</h3>
+      <p>For uploading one long video step-by-step in a week.</p>
+      <a href="6plan.html">Start Plan</a>
+    </div>
+
+    <div class="button-box">
+      <h3>2-Day YouTube Plan</h3>
+      <p>Quick upload plan for one video in 2 days/video.</p>
+      <a href="2plan.html">Start Plan</a>
+    </div>
+  </div>
+
+</body>
+</html>
