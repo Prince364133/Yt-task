@@ -1,150 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Day 1: Research, Script Writing, Filming & B-Rolls</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YouTube Plan Hub</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
   <style>
-    body {
-      background: linear-gradient(to right, #0f0f0f, #1a1a1a);
-      color: #ffffff;
-      font-family: 'Segoe UI', sans-serif;
-      padding: 30px;
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    .container {
-      max-width: 960px;
-      margin: auto;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 0 20px rgba(0, 255, 170, 0.3);
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      gap: 30px;
     }
-    h1, h2 {
-      color: #ff3333;
+
+    .logo {
+      width: 100px;
+      animation: pulse 2s infinite ease-in-out;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.8; }
     }
-    th, td {
-      border: 1px solid #ff3333;
-      padding: 12px;
-      text-align: left;
+
+    .title {
+      font-size: 2.2rem;
+      text-align: center;
+      margin-top: 10px;
+      color: #ff0000;
     }
-    .btn {
-      display: inline-block;
-      margin-top: 20px;
-      background: #ff3333;
-      color: black;
-      padding: 12px 24px;
+
+    .button-container {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .button-box {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px 40px;
+      width: 280px;
+      text-align: center;
+      transition: 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+    }
+
+    .button-box:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+    }
+
+    .button-box a {
       text-decoration: none;
-      border-radius: 8px;
+      color: white;
+      font-size: 1.2rem;
       font-weight: bold;
+      display: inline-block;
+      padding: 15px 20px;
+      background-color: #ff0000;
+      border-radius: 10px;
+      margin-top: 15px;
+      transition: background 0.3s ease;
     }
 
-    /* Responsive design */
-    @media (max-width: 768px) {
-      body {
-        padding: 15px;
-      }
-      .container {
-        padding: 20px;
-        box-shadow: 0 0 15px rgba(0, 255, 170, 0.3);
-      }
-      table, th, td {
-        font-size: 14px;
-      }
-      h1, h2 {
-        font-size: 24px;
-      }
-      .btn {
-        padding: 10px 20px;
-        font-size: 14px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      body {
-        padding: 10px;
-      }
-      .container {
-        padding: 15px;
-        box-shadow: 0 0 10px rgba(0, 255, 170, 0.3);
-      }
-      table, th, td {
-        font-size: 12px;
-      }
-      h1, h2 {
-        font-size: 22px;
-      }
-      .btn {
-        padding: 8px 16px;
-        font-size: 12px;
-      }
+    .button-box a:hover {
+      background-color: #cc0000;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <a href="index.html" class="btn">← Back to Home</a>
-    <h1>Day 1: Research, Script Writing, Filming & B-Rolls</h1>
 
-    <h2>Quick Summary Table</h2>
-    <table>
-      <tr>
-        <th>Task</th>
-        <th>Tools/Platform</th>
-        <th>Status</th>
-      </tr>
-      <tr>
-        <td>Research the Topic</td>
-        <td>Google, YouTube, Research Papers</td>
-        <td>✓</td>
-      </tr>
-      <tr>
-        <td>Write the Script</td>
-        <td>Google Docs, MS Word</td>
-        <td>✓</td>
-      </tr>
-      <tr>
-        <td>Film the Video</td>
-        <td>Camera/Phone, Tripod, Lighting Equipment</td>
-        <td>✓</td>
-      </tr>
-      <tr>
-        <td>Collect B-Rolls</td>
-        <td>External Footage, Stock Videos, Own B-Rolls</td>
-        <td>✓</td>
-      </tr>
-    </table>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube Logo" class="logo">
 
-    <h2>Detailed Task Flow</h2>
+  <div class="title">Day-1 Plan</div>
 
-    <h3>1. Research the Topic</h3>
-    <ul>
-      <li>Use Google, YouTube, and other reliable sources to gather information about your topic.</li>
-      <li>Note down interesting facts, statistics, and relevant angles that you can use in your video.</li>
-    </ul>
-
-    <h3>2. Write the Script</h3>
-    <ul>
-      <li>Create a clear introduction, body, and conclusion structure.</li>
-      <li>Make sure to include your key points in an engaging and informative manner.</li>
-    </ul>
-
-    <h3>3. Film the Video</h3>
-    <ul>
-      <li>Set up your filming space, ensuring proper lighting and framing for your shot.</li>
-      <li>Use your camera or phone and ensure audio clarity for the best results.</li>
-    </ul>
-
-    <h3>4. Collect B-Rolls</h3>
-    <ul>
-      <li>Film extra footage, such as cutaway shots, reactions, or stock footage to enhance the video quality.</li>
-      <li>Ensure that B-rolls support the narrative and fill gaps in the main footage.</li>
-    </ul>
+  <div class="button-container">
+    <div class="button-box">
+      <h3>Topic Reasearch</h3>
+      <p>.</p>
+      <a href="day1.html">Start Plan</a>
+    </div>
+    
+     <div class="button-container">
+    <div class="button-box">
+      <h3> Thumbnail/Title/Description</h3>
+      <p>.</p>
+      <a href="day5.html">Start Plan</a>
+    </div>
+       
+<div class="button-container">
+    <div class="button-box">
+      <h3>  Script Writing</h3>
+      <p>.</p>
+      <a href="day2.html">Start Plan</a>
+    </div>
+  
   </div>
+
 </body>
 </html>
